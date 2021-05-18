@@ -27,22 +27,17 @@
 	<parent>
 		<groupId>org.apache.flink</groupId>
 		<artifactId>flink-test-utils-parent</artifactId>
-		<version>1.13-SNAPSHOT</version>
+		<version>1.14-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 
 	<artifactId>flink-connector-testing-framework</artifactId>
 	<name>Flink : Test utils : Testing Framework</name>
-	<packaging>pom</packaging>
-
-	<modules>
-		<module>flink-connector-test-common</module>
-		<module>flink-connector-test-kafka</module>
-	</modules>
 
 	<properties>
 		<testcontainers.version>1.15.1</testcontainers.version>
 		<flink.version>${project.version}</flink.version>
+		<junit.jupiter.version>5.7.1</junit.jupiter.version>
 	</properties>
 
 	<dependencies>
@@ -51,17 +46,44 @@
 			<artifactId>testcontainers</artifactId>
 			<version>${testcontainers.version}</version>
 		</dependency>
+
+		<!-- JUnit 5 -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${junit.jupiter.version}</version>
+		</dependency>
+
+		<!--  Unfortunately Testcontainers still depends on JUnit 4 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-clients_${scala.binary.version}</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-test-utils_2.11</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
 		<profile>
 			<!--
-				This profile is for running test cases in the testing framework.
-				Docker environment should be installed before using this profile because some test
-				cases use Testcontainers as the test environment.
-				To trigger this profile, use "-Prun-connector-test" option when running maven.
+				This profile is for building Docker image based on latest Flink code.
+				Docker environment should be installed before using this profile.
+				To trigger this profile, use "-Pbuild-flink-image" option when running maven.
 			-->
-			<id>run-connector-test</id>
+			<id>build-flink-image</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -81,25 +103,6 @@
 								</configuration>
 							</execution>
 						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<version>2.22.2</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<includes>
-								<include>**/*Case.java</include>
-							</includes>
-							<workingDirectory>${project.basedir}</workingDirectory>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>
