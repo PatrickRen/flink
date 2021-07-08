@@ -203,13 +203,6 @@ under the License.
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit4.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>${mockito.version}</version>
@@ -573,11 +566,11 @@ under the License.
 				<scope>import</scope>
 			</dependency>
 
-<!--			<dependency>-->
-<!--				<groupId>junit</groupId>-->
-<!--				<artifactId>junit</artifactId>-->
-<!--				<version>${junit4.version}</version>-->
-<!--			</dependency>-->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit4.version}</version>
+			</dependency>
 
 			<!-- Make sure we use a consistent commons-cli version throughout the project -->
 			<dependency>
